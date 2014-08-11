@@ -14,10 +14,13 @@ retryLimit = 5
 
 def getCamStatus():
     '''Checks status of camera and responds True if reachable'''
-    r = requests.get(camurl + '/login_user.htm')
-    soup = BeautifulSoup(r.content)
-    return bool(len(soup.find_all('input', attrs={'id':'login_user'})))
-
+    try:
+        r = requests.get(camurl + '/login_user.htm')
+        soup = BeautifulSoup(r.content)
+        return bool(len(soup.find_all('input', attrs={'id':'login_user'})))
+    except:
+        return None
+    
 def sendNotification(mailer,cnt):
     '''Send e-mail/text notification of failure'''
     msg = 'Your remote camera could not be reached. (try #%d)' % cnt

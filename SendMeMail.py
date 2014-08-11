@@ -38,20 +38,26 @@ class Mail:
         self.toaddr = toaddr
 
     def send(self):
-        self.server = smtplib.SMTP(self.serveraddr)
-        self.server.starttls()
-        self.server.login(self.username,self.password)
         if type(self.toaddr) == list:
             to_header = ", ".join(self.toaddr)
         else:
             to_header = self.toaddr
 
-        message =   ( "From: %s\nTo: %s\nSubject: %s\n\n%s" %
-                      (self.fromaddr, to_header, self.subject, self.msg) )
-        #print message
-        print 'Sending message...'
-        self.server.sendmail(self.fromaddr, self.toaddr, message)
-        self.server.quit()
+        message = ( "From: %s\nTo: %s\nSubject: %s\n\n%s" %
+                    (self.fromaddr, to_header, self.subject, self.msg) )
+        
+        try:
+            self.server = smtplib.SMTP(self.serveraddr)
+            self.server.starttls()
+            self.server.login(self.username,self.password)
+
+            print 'Sending message...'
+            self.server.sendmail(self.fromaddr, self.toaddr, message)
+            self.server.quit()
+        except:
+            print '\nMail::Could not send message:'
+            for line in message.split('\n'):
+                print '\t%s' % line
 
     def close(self):
         pass
