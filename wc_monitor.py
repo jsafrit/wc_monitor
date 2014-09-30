@@ -38,7 +38,7 @@ def main():
 
         if not cam_up:
             warnCnt += 1
-            #send a notificaion
+            #send a notification
             sendNotification(mailer, warnCnt)
             #exit before flooding
             if warnCnt >= retryLimit:
