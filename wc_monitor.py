@@ -9,20 +9,22 @@ from SendMeMail import Mail
 camurl = 'http://dl0414.myfoscam.org'
 #email = '3013797664@txt.att.net'
 email = '3362631393@vtext.com'
-checkInterval = 600  #in seconds
+checkInterval = 600  # in seconds
 retryLimit = 5
 
+
 def getCamStatus():
-    '''Checks status of camera and responds True if reachable'''
+    """Checks status of camera and responds True if reachable"""
     try:
         r = requests.get(camurl + '/login_user.htm')
         soup = BeautifulSoup(r.content)
-        return bool(len(soup.find_all('input', attrs={'id':'login_user'})))
+        return bool(len(soup.find_all('input', attrs={'id': 'login_user'})))
     except:
         return None
-    
-def sendNotification(mailer,cnt):
-    '''Send e-mail/text notification of failure'''
+
+
+def sendNotification(mailer, cnt):
+    """Send e-mail/text notification of failure"""
     msg = 'Your remote camera could not be reached. (try #%d)' % cnt
     print msg, 
     mailer.setMessage(msg)
@@ -55,4 +57,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
